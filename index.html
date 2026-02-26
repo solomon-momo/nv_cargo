@@ -20,119 +20,141 @@
           100% { transform: translateX(20px); opacity: 0; }
         }
         
-        /* === 複雜情境動畫 (總長度 15 秒循環) === */
+        /* === 複雜情境動畫 (總長度 20 秒循環，精準校調時間軸) === */
         
-        /* 1. 車體移動軌跡 (從 8F 出發 -> 1F 取貨 -> 回 8F) */
+        /* 1. 車體移動軌跡 (重構關鍵影格，消除一切漂移與不同步) */
         @keyframes robotSync {
-            0%, 8%   { left: 15%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 8F 收發室待命 */
-            13%, 18% { left: 56%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 移至 8F 電梯口 */
-            21%      { left: 81%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 進入電梯 */
-            22%      { left: 81%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 準備下樓 */
-            35%      { left: 81%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 抵達 1F 電梯口 */
-            36%      { left: 81%; bottom: 16%; transform: scaleX(-1); opacity: 1; } /* 在 1F 轉向左側 */
-            40%      { left: 45%; bottom: 16%; transform: scaleX(-1); opacity: 1; } /* 遇到路人障礙 */
-            45%, 52% { left: 45%; bottom: 16%; transform: scaleX(-1); opacity: 1; } /* 停頓避障 */
-            57%, 62% { left: 15%; bottom: 16%; transform: scaleX(-1); opacity: 1; } /* 抵達 1F 叫件人前 */
-            63%, 65% { left: 15%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 取貨後轉向右側 */
-            70%, 78% { left: 56%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 移至 1F 電梯口 */
-            81%      { left: 81%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 進入電梯 */
-            82%      { left: 81%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 準備上樓 */
-            92%      { left: 81%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 抵達 8F 電梯口 */
-            95%      { left: 81%; bottom: 76%; transform: scaleX(-1); opacity: 1; } /* 在 8F 轉向左側 */
-            98%, 100%{ left: 15%; bottom: 76%; transform: scaleX(-1); opacity: 1; } /* 回到 8F 收發室 */
+            0%, 3%   { left: 15%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 8F 待命 */
+            8%, 12%  { left: 56%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 移至 8F 電梯口 */
+            15%, 16% { left: 81%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 進入電梯 (16%起步) */
+            25%, 26% { left: 81%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 抵達 1F (25%抵達) */
+            26.1%    { left: 81%; bottom: 16%; transform: scaleX(-1); opacity: 1; } /* 轉向左側 */
+            30%, 33% { left: 45%; bottom: 16%; transform: scaleX(-1); opacity: 1; } /* 避障停頓 */
+            36%, 39% { left: 15%; bottom: 16%; transform: scaleX(-1); opacity: 1; } /* 取貨停留 */
+            39.1%, 41%{ left: 15%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 轉向右側 */
+            45%, 73% { left: 56%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 死死鎖定在 1F 電梯口等候，絕對不漂移 */
+            76%, 77% { left: 81%; bottom: 16%; transform: scaleX(1); opacity: 1; } /* 進入空電梯 (77%起步) */
+            87%, 88% { left: 81%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 抵達 8F (87%抵達) */
+            88.1%    { left: 81%; bottom: 76%; transform: scaleX(-1); opacity: 1; } /* 轉向左側 */
+            92%, 98% { left: 15%; bottom: 76%; transform: scaleX(-1); opacity: 1; } /* 回到 8F 收發室 */
+            98.1%, 100%{ left: 15%; bottom: 76%; transform: scaleX(1); opacity: 1; } /* 轉向重置 */
         }
         
-        /* 2. 電梯車廂移動 (配合 AMR) */
+        /* 2. 電梯車廂移動 (完全貼合 AMR 時間軸) */
         @keyframes eleSync {
-            0%, 22%  { bottom: 76%; } /* 停在 8F 等待 AMR 進入 */
-            35%, 82% { bottom: 16%; } /* 下降至 1F，等待 AMR 取貨返回 */
-            92%, 100%{ bottom: 76%; } /* 回到 8F */
+            0%, 16%  { bottom: 76%; opacity: 1; } /* 停在 8F */
+            25%, 28% { bottom: 16%; opacity: 1; } /* 下降至 1F，讓 AMR 出來 */
+            35%, 46% { bottom: 76%; opacity: 1; } /* 電梯離開回 8F */
+            53%, 58% { bottom: 16%; opacity: 1; } /* 客滿電梯抵達 1F 並停留 */
+            61%      { bottom: -15%; opacity: 1; } /* 客滿電梯去地下室 (移走) */
+            61.1%, 64%{ bottom: -15%; opacity: 0; } /* 隱藏 */
+            64.1%    { bottom: 76%; opacity: 0; } /* 移回 8F 準備 */
+            65%      { bottom: 76%; opacity: 1; } /* 新的空電梯在 8F 出現 */
+            73%, 77% { bottom: 16%; opacity: 1; } /* 空電梯抵達 1F 等待 AMR 進入 */
+            87%, 100%{ bottom: 76%; opacity: 1; } /* 載 AMR 同步回到 8F */
+        }
+
+        /* 3. 電梯內的人群 (模擬客滿) */
+        @keyframes personSync {
+            0%, 45%  { opacity: 0; }
+            45.1%, 61% { opacity: 1; } /* 只在客滿那班出現，61% 移走時跟著消失 */
+            61.1%, 100%{ opacity: 0; }
+        }
+
+        /* 4. 客滿等候 Tooltip */
+        @keyframes tooltipWaitSync {
+            0%, 52%  { opacity: 0; transform: translate(-50%, 5px); }
+            53%, 60% { opacity: 1; transform: translate(-50%, 0); } /* 當客滿電梯在 1F 時顯示 */
+            61%, 100%{ opacity: 0; transform: translate(-50%, 5px); }
         }
         
-        /* 3. 1F 發送訊號動畫 */
+        /* 5. 1F 發送訊號動畫 */
         @keyframes signalPulse {
-            0%, 2%   { opacity: 0; transform: translateY(5px); }
-            3%, 10%  { opacity: 1; transform: translateY(0); color: #f97316; }
+            0%, 1%   { opacity: 0; transform: translateY(5px); }
+            2%, 8%   { opacity: 1; transform: translateY(0); color: #f97316; }
+            9%, 100% { opacity: 0; transform: translateY(5px); }
+        }
+
+        /* 6. 8F 接收與派車動畫 */
+        @keyframes dispatchPulse {
+            0%, 4%   { opacity: 0; transform: translateY(5px); }
+            5%, 11%  { opacity: 1; transform: translateY(0); color: #3b82f6; }
             12%, 100%{ opacity: 0; transform: translateY(5px); }
         }
-
-        /* 4. 8F 接收與派車動畫 */
-        @keyframes dispatchPulse {
-            0%, 5%   { opacity: 0; transform: translateY(5px); }
-            6%, 13%  { opacity: 1; transform: translateY(0); color: #3b82f6; }
-            15%, 100%{ opacity: 0; transform: translateY(5px); }
-        }
         
-        /* 5. 避障 Tooltip (加入 scaleX(-1) 抵銷車體的翻轉) */
+        /* 7. 避障 Tooltip (加入 scaleX(-1) 抵銷車體的翻轉) */
         @keyframes tooltipAvoidSync {
-            0%, 44%  { opacity: 0; transform: translate(-50%, 5px) scaleX(-1); }
-            45%, 52% { opacity: 1; transform: translate(-50%, 0) scaleX(-1); }
-            53%, 100%{ opacity: 0; transform: translate(-50%, 5px) scaleX(-1); }
+            0%, 29%  { opacity: 0; transform: translate(-50%, 5px) scaleX(-1); }
+            30%, 33% { opacity: 1; transform: translate(-50%, 0) scaleX(-1); }
+            34%, 100%{ opacity: 0; transform: translate(-50%, 5px) scaleX(-1); }
         }
         
-        /* 6. 取件包裹消失動畫 */
+        /* 8. 取件包裹消失動畫 */
         @keyframes cargoSync {
-            0%, 57%  { opacity: 1; transform: scale(1); } /* 等待 AMR */
-            58%, 100%{ opacity: 0; transform: scale(0.5); } /* 被 AMR 載走 */
+            0%, 37%  { opacity: 1; transform: scale(1); } /* 等待 AMR */
+            38%, 100%{ opacity: 0; transform: scale(0.5); } /* 被 AMR 載走 */
         }
 
-        /* 7. 走廊外呼叫按梯的機械臂 */
+        /* 9. 走廊外呼叫按梯的機械臂 (客滿離開後再次按壓) */
         @keyframes armOutSync {
-            0%, 14%  { width: 0; opacity: 0; }
-            15%, 17% { width: 20px; opacity: 1; } /* 8F 按下樓 */
-            18%, 73% { width: 0; opacity: 0; }
-            74%, 76% { width: 20px; opacity: 1; } /* 1F 按上樓 */
-            77%, 100%{ width: 0; opacity: 0; }
+            0%, 9%   { width: 0; opacity: 0; }
+            10%, 12% { width: 20px; opacity: 1; } /* 8F 第一次按梯 */
+            13%, 48% { width: 0; opacity: 0; }
+            49%, 51% { width: 20px; opacity: 1; } /* 1F 第一次按梯 (呼叫第一班) */
+            52%, 61% { width: 0; opacity: 0; }
+            62%, 64% { width: 20px; opacity: 1; } /* 1F 第二次按梯 (客滿離開後，重新呼叫) */
+            65%, 100%{ width: 0; opacity: 0; }
         }
 
-        /* 8. 8F 走廊按鈕亮燈 */
+        /* 10. 8F 走廊按鈕亮燈 */
         @keyframes hallBtn8fSync {
-            0%, 15%  { background-color: #cbd5e1; box-shadow: none; }
-            16%, 22% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } 
-            23%, 100%{ background-color: #cbd5e1; box-shadow: none; }
+            0%, 10%  { background-color: #cbd5e1; box-shadow: none; }
+            11%, 16% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } 
+            17%, 100%{ background-color: #cbd5e1; box-shadow: none; }
         }
 
-        /* 9. 1F 走廊按鈕亮燈 */
+        /* 11. 1F 走廊按鈕亮燈 */
         @keyframes hallBtn1fSync {
-            0%, 74%  { background-color: #cbd5e1; box-shadow: none; }
-            75%, 82% { background-color: #f97316; box-shadow: 0 0 6px #f97316; }
-            83%, 100%{ background-color: #cbd5e1; box-shadow: none; }
+            0%, 49%  { background-color: #cbd5e1; box-shadow: none; }
+            50%, 53% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } /* 呼叫第一台 */
+            54%, 62% { background-color: #cbd5e1; box-shadow: none; } /* 第一台抵達，按鈕熄滅 */
+            63%, 73% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } /* 呼叫第二台 */
+            74%, 100%{ background-color: #cbd5e1; box-shadow: none; } /* 第二台抵達，按鈕熄滅 */
         }
 
-        /* 10. 車廂內按樓層的機械臂 */
+        /* 12. 車廂內按樓層的機械臂 */
         @keyframes armInSync {
-            0%, 23%  { width: 0; opacity: 0; }
-            24%, 26% { width: 14px; opacity: 1; } /* 車內按 1F */
-            27%, 83% { width: 0; opacity: 0; }
-            84%, 86% { width: 14px; opacity: 1; } /* 車內按 8F */
-            87%, 100%{ width: 0; opacity: 0; }
+            0%, 14%  { width: 0; opacity: 0; }
+            15%, 17% { width: 14px; opacity: 1; } /* 車內按 1F */
+            18%, 74% { width: 0; opacity: 0; }
+            75%, 77% { width: 14px; opacity: 1; } /* 車內按 8F */
+            78%, 100%{ width: 0; opacity: 0; }
         }
 
-        /* 11. 車廂內按鈕亮燈 */
+        /* 13. 車廂內按鈕亮燈 */
         @keyframes eleInBtnSync {
-            0%, 24%  { background-color: #94a3b8; box-shadow: none; }
-            25%, 35% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } /* 亮燈到 1F */
-            36%, 84% { background-color: #94a3b8; box-shadow: none; }
-            85%, 92% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } /* 亮燈到 8F */
-            93%, 100%{ background-color: #94a3b8; box-shadow: none; }
+            0%, 15%  { background-color: #94a3b8; box-shadow: none; }
+            16%, 25% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } /* 亮燈到 1F */
+            26%, 75% { background-color: #94a3b8; box-shadow: none; }
+            76%, 87% { background-color: #f97316; box-shadow: 0 0 6px #f97316; } /* 亮燈到 8F */
+            88%, 100%{ background-color: #94a3b8; box-shadow: none; }
         }
 
         .animate-float { animation: float 3s ease-in-out infinite; }
-        .animate-flow-1 { animation: flowRight 2s linear infinite; }
-        .animate-flow-2 { animation: flowRight 2s linear infinite 0.7s; }
-        .animate-flow-3 { animation: flowRight 2s linear infinite 1.4s; }
         
-        .animate-robot-sync { animation: robotSync 15s ease-in-out infinite; }
-        .animate-ele-sync { animation: eleSync 15s ease-in-out infinite; }
-        .animate-signal-pulse { animation: signalPulse 15s ease-in-out infinite; }
-        .animate-dispatch-pulse { animation: dispatchPulse 15s ease-in-out infinite; }
-        .animate-tooltip-avoid { animation: tooltipAvoidSync 15s ease-in-out infinite; }
-        .animate-cargo-sync { animation: cargoSync 15s ease-in-out infinite; }
-        .animate-arm-out { animation: armOutSync 15s ease-in-out infinite; }
-        .animate-hall-btn-8f { animation: hallBtn8fSync 15s ease-in-out infinite; }
-        .animate-hall-btn-1f { animation: hallBtn1fSync 15s ease-in-out infinite; }
-        .animate-arm-in { animation: armInSync 15s ease-in-out infinite; }
-        .animate-ele-in-btn { animation: eleInBtnSync 15s ease-in-out infinite; }
+        .animate-robot-sync { animation: robotSync 20s ease-in-out infinite; }
+        .animate-ele-sync { animation: eleSync 20s ease-in-out infinite; }
+        .animate-person-sync { animation: personSync 20s ease-in-out infinite; }
+        .animate-tooltip-wait { animation: tooltipWaitSync 20s ease-in-out infinite; }
+        .animate-signal-pulse { animation: signalPulse 20s ease-in-out infinite; }
+        .animate-dispatch-pulse { animation: dispatchPulse 20s ease-in-out infinite; }
+        .animate-tooltip-avoid { animation: tooltipAvoidSync 20s ease-in-out infinite; }
+        .animate-cargo-sync { animation: cargoSync 20s ease-in-out infinite; }
+        .animate-arm-out { animation: armOutSync 20s ease-in-out infinite; }
+        .animate-hall-btn-8f { animation: hallBtn8fSync 20s ease-in-out infinite; }
+        .animate-hall-btn-1f { animation: hallBtn1fSync 20s ease-in-out infinite; }
+        .animate-arm-in { animation: armInSync 20s ease-in-out infinite; }
+        .animate-ele-in-btn { animation: eleInBtnSync 20s ease-in-out infinite; }
     </style>
 </head>
 <body class="bg-slate-50">
@@ -146,12 +168,8 @@
           <div class="z-10">
             <h1 class="text-3xl font-bold mb-2 flex items-center gap-3">
               <i data-lucide="activity" class="animate-pulse text-blue-300"></i>
-              智慧垂直物流：免改裝 AMR 方案
+              包裹收發方案
             </h1>
-            <div class="inline-flex items-center bg-blue-800/60 rounded-full px-4 py-1.5 text-sm border border-blue-400/30">
-              <i data-lucide="shield-check" class="mr-2 text-emerald-400" width="16" height="16"></i>
-              <span class="font-medium">系統整合驅動 ‧ 無需管委會授權 ‧ 隨插即用</span>
-            </div>
           </div>
           <i data-lucide="building" class="absolute right-8 opacity-10" width="120" height="120"></i>
         </div>
@@ -163,7 +181,7 @@
             <!-- 1. Software (The Brain) -->
             <div class="lg:col-span-3 flex flex-col gap-6 relative">
               <div class="text-center mb-2">
-                <span class="bg-blue-100 text-blue-800 font-bold px-4 py-1.5 rounded-full text-sm">1. 軟體定義大腦</span>
+                <span class="bg-blue-100 text-blue-800 font-bold px-4 py-1.5 rounded-full text-sm">1. 軟體配置</span>
               </div>
               
               <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-5 shadow-sm text-center transform transition hover:scale-105">
@@ -192,7 +210,7 @@
             <!-- 2. Hardware -->
             <div class="lg:col-span-3 flex flex-col gap-6 relative">
               <div class="text-center mb-2">
-                <span class="bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-full text-sm">2. 彈性硬體配置</span>
+                <span class="bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-full text-sm">2. 硬體配置</span>
               </div>
               
               <div class="bg-gradient-to-b from-emerald-50 to-emerald-100 border border-emerald-200 rounded-2xl p-6 h-full flex flex-col justify-center items-center shadow-sm relative">
@@ -226,7 +244,6 @@
                     <i data-lucide="package" class="text-slate-500 flex-shrink-0" width="24" height="24"></i>
                     <div class="text-left leading-tight">
                       <h3 class="font-bold text-slate-800 text-xs">高載重籠車</h3>
-                      <p class="text-[9px] text-slate-500">極大化坪效</p>
                     </div>
                   </div>
                 </div>
@@ -236,7 +253,7 @@
             <!-- 3. Physical Environment (Expanded Story) -->
             <div class="lg:col-span-6 flex flex-col gap-6 relative">
               <div class="text-center mb-2">
-                <span class="bg-orange-100 text-orange-800 font-bold px-4 py-1.5 rounded-full text-sm">3. 實體環境突破 (完整配送情境)</span>
+                <span class="bg-orange-100 text-orange-800 font-bold px-4 py-1.5 rounded-full text-sm">3. 情境模擬</span>
               </div>
               
               <div class="bg-slate-100 border-2 border-slate-200 rounded-2xl p-4 h-full min-h-[380px] flex flex-col shadow-inner relative overflow-hidden">
@@ -301,10 +318,14 @@
 
                   <!-- 移動的電梯車廂 (Elevator Car) -->
                   <div class="absolute right-[2%] w-[24%] h-[18%] bg-slate-50 border-2 border-slate-400 rounded z-10 animate-ele-sync flex items-center justify-center shadow-md overflow-hidden">
-                     <div class="absolute inset-y-0 left-1/2 w-0.5 bg-slate-200"></div>
+                     <div class="absolute inset-y-0 left-1/2 w-0.5 bg-slate-200 z-0"></div>
                      <div class="absolute right-1 top-1/2 -translate-y-1/2 w-2 h-6 bg-slate-300 rounded-sm flex flex-col justify-around py-0.5 border border-slate-400 z-20">
                         <div class="w-1 h-1 rounded-full bg-slate-400 mx-auto"></div>
                         <div class="w-1 h-1 rounded-full bg-slate-400 mx-auto animate-ele-in-btn"></div>
+                     </div>
+                     <!-- 新增：模擬客滿的人群 -->
+                     <div class="absolute inset-0 flex items-center justify-center animate-person-sync text-slate-500 z-10 bg-slate-100">
+                        <i data-lucide="users" width="32" height="32"></i>
                      </div>
                   </div>
 
@@ -327,13 +348,14 @@
                         <i data-lucide="activity" width="14" height="14"></i> 偵測避障
                         <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-amber-500"></div>
                      </div>
+                     
+                     <!-- 新增動態 Tooltip: 客滿等候 -->
+                     <div class="absolute bottom-[130%] left-1/2 -translate-x-1/2 bg-red-500 text-white text-[11px] font-bold px-2 py-1 rounded shadow-md whitespace-nowrap animate-tooltip-wait flex items-center gap-1 z-50">
+                        <i data-lucide="ban" width="14" height="14"></i> 客滿等下一台
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-red-500"></div>
+                     </div>
                   </div>
 
-                </div>
-
-                <!-- Core Value Tag -->
-                <div class="absolute bottom-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg whitespace-nowrap flex items-center gap-2 z-50">
-                  <i data-lucide="arrow-up-circle" width="16" height="16"></i> 無需 API，仿生克服所有物理挑戰
                 </div>
 
               </div>
