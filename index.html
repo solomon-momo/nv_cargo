@@ -10,6 +10,14 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .shadow-hard {
+            box-shadow: 4px 4px 0px rgba(30, 41, 59, 1);
+        }
+        
         @keyframes float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-8px); }
@@ -366,121 +374,123 @@
         
       </div>
     </div>
-
-    <div className="min-h-screen bg-slate-100 p-8 flex flex-col items-center font-sans">
-      <div className="w-full max-w-6xl bg-white shadow-2xl rounded-2xl overflow-hidden border border-slate-200">
-        
-        {/* Header */}
-        <div className="bg-slate-900 p-6 text-white border-b-4 border-blue-500">
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Layers className="text-blue-400" />
-            智慧垂直物流系統：軟體架構圖
-          </h1>
-          <p className="text-slate-400 text-sm mt-1">SolRobo 智能物流解決方案專用架構</p>
-        </div>
-
-        <div className="p-8 space-y-10 relative">
-          
-          {/* Layer 1: User Interface */}
-          <div className="relative border-2 border-slate-300 rounded-xl p-6 bg-slate-50/50">
-            <div className="absolute -top-3 left-6 bg-white px-2 text-slate-500 text-sm font-bold">User interface</div>
-            <div className="grid grid-cols-2 gap-12">
-              <div className="bg-white border-2 border-slate-800 p-6 rounded shadow-[4px_4px_0px_rgba(30,41,59,1)] flex items-center gap-4">
-                <Smartphone className="text-slate-800" size={32} />
-                <div>
-                  <h3 className="font-bold text-slate-800 text-lg">用戶 App / Web</h3>
-                  <p className="text-sm text-slate-500 mt-1">叫件、追蹤、通知回報</p>
-                </div>
-              </div>
-              <div className="bg-white border-2 border-slate-800 p-6 rounded shadow-[4px_4px_0px_rgba(30,41,59,1)] flex items-center gap-4">
-                <Server className="text-slate-800" size={32} />
-                <div>
-                  <h3 className="font-bold text-slate-800 text-lg">管理後台 (Admin Portal)</h3>
-                  <p className="text-sm text-slate-500 mt-1">車隊監控、數據分析、異常排除</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Layer 2: SolRobo on NVIDIA Jetson AGX */}
-          <div className="relative border-2 border-slate-800 rounded-xl p-8 bg-white shadow-lg">
-            <div className="text-center mb-8">
-              <h2 className="text-xl font-bold text-slate-800 tracking-wider">SolRobo on NVIDIA Jetson AGX</h2>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              
-              {/* 導航系統 */}
-              <div className="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
-                <Navigation className="text-slate-700 mb-3" size={28} />
-                <h3 className="font-bold text-slate-800 mb-2">導航系統</h3>
-                <p className="text-xs text-slate-600 leading-relaxed mb-4">跨樓層 SLAM 地圖切換<br/>動態路人避障</p>
-                <div className="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuVSLAM</div>
-              </div>
-
-              {/* 視覺系統 */}
-              <div className="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
-                <Eye className="text-slate-700 mb-3" size={28} />
-                <h3 className="font-bold text-slate-800 mb-2">視覺系統</h3>
-                <p className="text-xs text-slate-600 leading-relaxed mb-4">電梯按鈕座標辨識<br/>客滿人數辨識</p>
-                <div className="mt-auto w-full border-2 border-slate-800 py-2 bg-red-600 text-white font-bold text-sm">SolVision</div>
-              </div>
-
-              {/* 手臂控制模組 */}
-              <div className="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
-                <Settings className="text-slate-700 mb-3" size={28} />
-                <h3 className="font-bold text-slate-800 mb-2">手臂控制模組</h3>
-                <p className="text-xs text-slate-600 leading-relaxed mb-4">機械臂控制與避障</p>
-                <div className="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuMotion</div>
-              </div>
-
-              {/* 任務調度模組 */}
-              <div className="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50 justify-between">
-                <div className="flex flex-col items-center">
-                  <Monitor className="text-slate-700 mb-3" size={28} />
-                  <h3 className="font-bold text-slate-800 mb-2">任務調度模組</h3>
-                  <div className="space-y-1 text-xs text-slate-600 mt-2">
-                    <p>任務分派</p>
-                    <p>資料庫數據</p>
-                    <p>即時監控</p>
-                  </div>
-                </div>
-                {/* SolScheduler block has been removed as per request */}
-              </div>
-
-            </div>
-          </div>
-
-          {/* Layer 3: Controller Layer */}
-          <div className="grid grid-cols-3 gap-8 px-12">
-            <div className="bg-white border-2 border-slate-800 p-6 rounded shadow-[4px_4px_0px_rgba(30,41,59,1)] text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
-              <Truck className="text-slate-800" size={32} />
-              <h4 className="font-bold text-slate-800">AMR 控制器</h4>
-            </div>
-            <div className="bg-white border-2 border-slate-800 p-6 rounded shadow-[4px_4px_0px_rgba(30,41,59,1)] text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
-              <Bot className="text-slate-800" size={32} />
-              <h4 className="font-bold text-slate-800">手臂控制器</h4>
-            </div>
-            <div className="bg-white border-2 border-slate-800 p-6 rounded shadow-[4px_4px_0px_rgba(30,41,59,1)] text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
-              <Radar className="text-slate-800" size={32} />
-              <h4 className="font-bold text-slate-800">傳感裝置</h4>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Footer */}
-        <div className="bg-slate-50 p-4 border-t border-slate-200 text-center">
-          <p className="text-[10px] text-slate-400 uppercase tracking-widest">
-            SolRobo Logistics Software Architecture Specification
-          </p>
-        </div>
-      </div>
-    </div>
     
     <!-- 啟動 Lucide Icons -->
     <script>
       lucide.createIcons();
+    </script>
+</body>
+<body class="bg-slate-100 p-8 min-h-screen flex flex-col items-center">
+
+    <div class="w-full max-w-6xl bg-white shadow-2xl rounded-2xl overflow-hidden border border-slate-200">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 p-6 text-white border-b-4 border-blue-500">
+            <div class="flex items-center gap-3">
+                <i data-lucide="layers" class="text-blue-400"></i>
+                <h1 class="text-2xl font-bold">智慧垂直物流系統：軟體架構圖</h1>
+            </div>
+            <p class="text-slate-400 text-sm mt-1">SolRobo 智能物流解決方案專用架構</p>
+        </div>
+
+        <div class="p-8 space-y-10">
+            
+            <!-- Layer 1: User Interface -->
+            <div class="relative border-2 border-slate-300 rounded-xl p-6 bg-slate-50/50">
+                <div class="absolute -top-3 left-6 bg-white px-2 text-slate-500 text-sm font-bold">User interface</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard flex items-center gap-4">
+                        <i data-lucide="smartphone" class="text-slate-800" width="32" height="32"></i>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-lg">用戶 App / Web</h3>
+                            <p class="text-sm text-slate-500 mt-1">叫件、追蹤、通知回報</p>
+                        </div>
+                    </div>
+                    <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard flex items-center gap-4">
+                        <i data-lucide="server" class="text-slate-800" width="32" height="32"></i>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-lg">管理後台 (Admin Portal)</h3>
+                            <p class="text-sm text-slate-500 mt-1">車隊監控、數據分析、異常排除</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer 2: SolRobo on NVIDIA Jetson AGX -->
+            <div class="relative border-2 border-slate-800 rounded-xl p-8 bg-white shadow-lg">
+                <div class="text-center mb-8">
+                    <h2 class="text-xl font-bold text-slate-800 tracking-wider">SolRobo on NVIDIA Jetson AGX</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    
+                    <!-- 導航系統 (NVIDIA Green) -->
+                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
+                        <i data-lucide="navigation" class="text-slate-700 mb-3" width="28" height="28"></i>
+                        <h3 class="font-bold text-slate-800 mb-2 text-sm">導航系統</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-4">跨樓層 SLAM 地圖切換<br>動態路人避障</p>
+                        <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuVSLAM</div>
+                    </div>
+
+                    <!-- 視覺系統 (SolVision Red) -->
+                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
+                        <i data-lucide="eye" class="text-slate-700 mb-3" width="28" height="28"></i>
+                        <h3 class="font-bold text-slate-800 mb-2 text-sm">視覺系統</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-4">電梯按鈕座標辨識<br>客滿人數辨識</p>
+                        <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-red-600 text-white font-bold text-sm">SolVision</div>
+                    </div>
+
+                    <!-- 手臂控制模組 (NVIDIA Green) -->
+                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
+                        <i data-lucide="settings" class="text-slate-700 mb-3" width="28" height="28"></i>
+                        <h3 class="font-bold text-slate-800 mb-2 text-sm">手臂控制模組</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-4">機械臂控制與避障</p>
+                        <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuMotion</div>
+                    </div>
+
+                    <!-- 任務調度模組 -->
+                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50 flex flex-col justify-start min-h-[160px]">
+                        <i data-lucide="monitor" class="text-slate-700 mb-3" width="28" height="28"></i>
+                        <h3 class="font-bold text-slate-800 mb-2 text-sm">任務調度模組</h3>
+                        <div class="space-y-1 text-[11px] text-slate-600 mt-2">
+                            <p>任務分派</p>
+                            <p>資料庫數據</p>
+                            <p>即時監控</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Layer 3: Controller Layer -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-12">
+                <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
+                    <i data-lucide="truck" class="text-slate-800" width="32" height="32"></i>
+                    <h4 class="font-bold text-slate-800">AMR 控制器</h4>
+                </div>
+                <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
+                    <i data-lucide="bot" class="text-slate-800" width="32" height="32"></i>
+                    <h4 class="font-bold text-slate-800">手臂控制器</h4>
+                </div>
+                <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
+                    <i data-lucide="radar" class="text-slate-800" width="32" height="32"></i>
+                    <h4 class="font-bold text-slate-800">傳感裝置</h4>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-slate-50 p-4 border-t border-slate-200 text-center">
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest">
+                SolRobo Logistics Software Architecture Specification
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 初始化 Lucide 圖示
+        lucide.createIcons();
     </script>
 </body>
 </html>
