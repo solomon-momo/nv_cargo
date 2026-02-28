@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智慧垂直物流系統：包裹收發與架構</title>
+    <title>智慧垂直物流系統：包裹收發方案展示</title>
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Lucide Icons -->
@@ -144,204 +144,341 @@
         .animate-hall-btn-1f { animation: hallBtn1fSync 20s ease-in-out infinite; }
         .animate-arm-in { animation: armInSync 20s ease-in-out infinite; }
         .animate-ele-in-btn { animation: eleInBtnSync 20s ease-in-out infinite; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { 
+            background-color: #1e293b; 
+            color: white; 
+            border-bottom: 4px solid #3b82f6; 
+        }
     </style>
 </head>
-<body class="bg-slate-100 p-8 min-h-screen flex flex-col items-center gap-12 overflow-x-hidden">
+<body class="bg-slate-100 min-h-screen flex flex-col items-center p-4 md:p-8 overflow-x-hidden">
 
-    <!-- === 區塊 1: 情境模擬與包裹收發方案 === -->
-    <div class="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-900 via-indigo-800 to-indigo-900 p-6 text-white relative flex justify-between items-center">
-          <div class="z-10">
-            <h1 class="text-3xl font-bold mb-2 flex items-center gap-3">
-              <i data-lucide="activity" class="animate-pulse text-blue-300"></i>
-              包裹收發方案
-            </h1>
-          </div>
-          <i data-lucide="building" class="absolute right-8 opacity-10" width="120" height="120"></i>
-        </div>
-
-        <!-- Main Diagram Area -->
-        <div class="p-8">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
-            <!-- 1. Software -->
-            <div class="lg:col-span-3 flex flex-col gap-6 relative">
-              <div class="text-center mb-2">
-                <span class="bg-blue-100 text-blue-800 font-bold px-4 py-1.5 rounded-full text-sm">1. 軟體配置</span>
-              </div>
-              <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-5 shadow-sm text-center transform transition hover:scale-105">
-                <i data-lucide="cloud" class="mx-auto text-blue-600 mb-2 animate-float" width="40" height="40"></i>
-                <h3 class="font-bold text-slate-800 text-md mb-2">雲端 FMS 車隊管理</h3>
-                <div class="flex justify-center gap-3 text-slate-600">
-                  <div class="flex flex-col items-center"><i data-lucide="server" class="text-blue-500" width="18" height="18"></i><span class="text-[10px] font-medium">任務調度</span></div>
-                  <div class="flex flex-col items-center"><i data-lucide="smartphone" class="text-blue-500" width="18" height="18"></i><span class="text-[10px] font-medium">一鍵叫車</span></div>
-                </div>
-              </div>
-              <div class="flex justify-center text-blue-400 py-0"><i data-lucide="wifi" class="animate-pulse" width="20" height="20"></i></div>
-              <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 rounded-2xl p-5 shadow-sm text-center transform transition hover:scale-105">
-                <i data-lucide="cpu" class="mx-auto text-indigo-600 mb-2 animate-float" style="animation-delay: 0.5s;" width="40" height="40"></i>
-                <h3 class="font-bold text-slate-800 text-md mb-2">AI 邊緣運算</h3>
-                <div class="flex justify-center gap-3 text-slate-600">
-                  <div class="flex flex-col items-center"><i data-lucide="eye" class="text-indigo-500" width="18" height="18"></i><span class="text-[10px] font-medium">視覺辨識</span></div>
-                  <div class="flex flex-col items-center"><i data-lucide="navigation" class="text-indigo-500" width="18" height="18"></i><span class="text-[10px] font-medium">SLAM導航</span></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2. Hardware -->
-            <div class="lg:col-span-3 flex flex-col gap-6 relative">
-              <div class="text-center mb-2">
-                <span class="bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-full text-sm">2. 硬體配置</span>
-              </div>
-              <div class="bg-gradient-to-b from-emerald-50 to-emerald-100 border border-emerald-200 rounded-2xl p-6 h-full flex flex-col justify-center items-center shadow-sm relative">
-                <div class="relative flex flex-col items-center w-full animate-float" style="animation-delay: 1s;">
-                  <div class="bg-white border-2 border-emerald-400 w-full p-2.5 rounded-t-2xl shadow-md text-center z-20 flex items-center gap-2">
-                    <i data-lucide="settings" class="text-emerald-600 flex-shrink-0" width="24" height="24"></i>
-                    <div class="text-left leading-tight"><h3 class="font-bold text-slate-800 text-xs">協作機械臂</h3><p class="text-[9px] text-slate-500">視覺導引按壓</p></div>
-                  </div>
-                  <div class="bg-slate-800 border-2 border-slate-700 w-[96%] p-2 shadow-inner z-[15] my-0.5 rounded-sm flex items-center gap-2">
-                    <i data-lucide="cpu" class="text-emerald-400 flex-shrink-0" width="20" height="20"></i>
-                    <div class="text-left leading-tight"><h3 class="font-bold text-white text-[11px] tracking-wider">Jetson AGX</h3><p class="text-[8px] text-emerald-100">控制 AMR 與機械臂</p></div>
-                  </div>
-                  <div class="bg-emerald-600 text-white border-2 border-emerald-700 w-[105%] p-3 rounded-lg shadow-lg text-center z-10 my-1 flex items-center gap-2">
-                    <i data-lucide="truck" class="flex-shrink-0" width="28" height="28"></i>
-                    <div class="text-left leading-tight"><h3 class="font-bold text-sm">AMR 底盤</h3><p class="text-[9px] text-emerald-200">自主移動避障</p></div>
-                  </div>
-                  <div class="bg-white border-2 border-slate-300 w-full p-2.5 rounded-b-2xl shadow-md text-center z-0 flex items-center gap-2">
-                    <i data-lucide="package" class="text-slate-500 flex-shrink-0" width="24" height="24"></i>
-                    <div class="text-left leading-tight"><h3 class="font-bold text-slate-800 text-xs">高載重籠車</h3></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. 情境模擬動畫區 -->
-            <div class="lg:col-span-6 flex flex-col gap-6 relative">
-              <div class="text-center mb-2">
-                <span class="bg-orange-100 text-orange-800 font-bold px-4 py-1.5 rounded-full text-sm">3. 情境模擬</span>
-              </div>
-              <div class="bg-slate-100 border-2 border-slate-200 rounded-2xl p-4 h-full min-h-[380px] flex flex-col shadow-inner relative overflow-hidden">
-                <div class="flex-1 relative w-full h-full mt-2">
-                  <!-- Floors -->
-                  <div class="absolute bottom-[75%] left-0 w-[72%] border-b-[6px] border-slate-300 z-10"></div>
-                  <div class="absolute bottom-[78%] left-[10%] font-black text-slate-700 text-xl flex items-center gap-2 z-10">8F <span class="text-xs bg-white px-2 py-0.5 rounded shadow-sm text-slate-600">辦公室收發室</span></div>
-                  <div class="absolute bottom-[15%] left-0 w-[72%] border-b-[6px] border-slate-300 z-10"></div>
-                  <div class="absolute bottom-[18%] left-[10%] font-black text-slate-700 text-xl flex items-center gap-2 z-10">1F <span class="text-xs bg-white px-2 py-0.5 rounded shadow-sm text-slate-600">大廳收貨點</span></div>
-                  
-                  <!-- People & Cargo -->
-                  <div class="absolute bottom-[76%] left-[2%] z-20 flex flex-col items-center"><i data-lucide="wifi" class="animate-dispatch-pulse absolute -top-5" width="18" height="18"></i><i data-lucide="user" class="text-slate-600" width="30" height="30"></i><div class="text-[9px] font-bold text-slate-500 mt-0.5">行政人員</div></div>
-                  <div class="absolute bottom-[16%] left-[2%] z-20 flex flex-col items-center"><i data-lucide="smartphone" class="animate-signal-pulse absolute -top-5" width="18" height="18"></i><i data-lucide="user" class="text-slate-600" width="30" height="30"></i><div class="text-[9px] font-bold text-slate-500 mt-0.5">收發需求</div></div>
-                  <div class="absolute bottom-[16%] left-[9%] z-10 text-amber-700 animate-cargo-sync"><i data-lucide="package" class="bg-amber-100 rounded" width="20" height="20"></i></div>
-                  <div class="absolute bottom-[16%] left-[38%] z-20 flex flex-col items-center text-slate-500"><i data-lucide="user" width="32" height="32"></i><div class="text-[9px] font-bold text-slate-400 mt-0.5">路人</div></div>
-
-                  <!-- Shaft -->
-                  <div class="absolute top-0 right-0 w-[28%] h-full bg-slate-200/60 border-l-4 border-slate-400"></div>
-                  <div class="absolute bottom-[83%] left-[68%] z-30"><div class="w-1.5 h-4 bg-slate-300 rounded-l-sm animate-hall-btn-8f shadow-inner"></div></div>
-                  <div class="absolute bottom-[23%] left-[68%] z-30"><div class="w-1.5 h-4 bg-slate-300 rounded-l-sm animate-hall-btn-1f shadow-inner"></div></div>
-
-                  <!-- Elevator Car -->
-                  <div class="absolute right-[2%] w-[24%] h-[18%] bg-slate-50 border-2 border-slate-400 rounded z-10 animate-ele-sync flex items-center justify-center shadow-md overflow-hidden">
-                     <div class="absolute right-1 top-1/2 -translate-y-1/2 w-2 h-6 bg-slate-300 rounded-sm border border-slate-400 z-20"><div class="w-1 h-1 rounded-full bg-slate-400 mx-auto animate-ele-in-btn mt-3"></div></div>
-                     <div class="absolute inset-0 flex items-center justify-center animate-person-sync text-slate-500 z-10 bg-slate-100"><i data-lucide="users" width="32" height="32"></i></div>
-                  </div>
-
-                  <!-- The Robot -->
-                  <div class="absolute w-10 h-10 bg-emerald-600 rounded flex items-center justify-center shadow-lg z-40 animate-robot-sync text-white border-b-4 border-emerald-800">
-                     <i data-lucide="truck" width="20" height="20"></i>
-                     <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-full h-1.5 bg-slate-700 origin-left animate-arm-out flex justify-end items-center rounded-r-sm"><div class="w-2 h-2.5 bg-slate-800 rounded-sm -mr-0.5"></div></div>
-                     <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-full h-1.5 bg-slate-700 origin-left animate-arm-in flex justify-end items-center rounded-r-sm"><div class="w-2 h-2.5 bg-slate-800 rounded-sm -mr-0.5"></div></div>
-                     <div class="absolute bottom-[130%] left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[11px] font-bold px-2 py-1 rounded shadow-md whitespace-nowrap animate-tooltip-avoid flex items-center gap-1 z-50"><i data-lucide="activity" width="14" height="14"></i> 偵測避障</div>
-                     <div class="absolute bottom-[130%] left-1/2 -translate-x-1/2 bg-red-500 text-white text-[11px] font-bold px-2 py-1 rounded shadow-md whitespace-nowrap animate-tooltip-wait flex items-center gap-1 z-50"><i data-lucide="ban" width="14" height="14"></i> 客滿等下一台</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Top Navigation Tabs -->
+    <div class="w-full max-w-6xl flex justify-center mb-8 bg-white rounded-xl shadow-md p-2 gap-2 border border-slate-200 sticky top-4 z-[100]">
+        <button onclick="openTab('simulation')" id="btn-simulation" class="tab-btn active flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-slate-600 hover:bg-slate-50 transition-all">
+            <i data-lucide="play-circle"></i> 情境動態演示
+        </button>
+        <button onclick="openTab('architecture')" id="btn-architecture" class="tab-btn flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-slate-600 hover:bg-slate-50 transition-all">
+            <i data-lucide="layers"></i> 系統軟體架構
+        </button>
+        <button onclick="openTab('prd')" id="btn-prd" class="tab-btn flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-slate-600 hover:bg-slate-50 transition-all">
+            <i data-lucide="file-text"></i> 詳細需求文件 (PRD)
+        </button>
     </div>
 
-    <!-- === 區塊 2: 軟體架構圖 === -->
-    <div class="w-full max-w-6xl bg-white shadow-2xl rounded-2xl overflow-hidden border border-slate-200">
-        <!-- Header -->
-        <div class="bg-slate-900 p-6 text-white border-b-4 border-blue-500">
-            <div class="flex items-center gap-3">
-                <i data-lucide="layers" class="text-blue-400"></i>
-                <h1 class="text-2xl font-bold">智慧垂直物流系統：軟體架構圖</h1>
-            </div>
-            <p class="text-slate-400 text-sm mt-1">SolRobo 智能物流解決方案專用架構</p>
-        </div>
-
-        <div class="p-8 space-y-10">
-            <!-- Layer 1: User Interface -->
-            <div class="relative border-2 border-slate-300 rounded-xl p-6 bg-slate-50/50">
-                <div class="absolute -top-3 left-6 bg-white px-2 text-slate-500 text-sm font-bold">User interface</div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard flex items-center gap-4">
-                        <i data-lucide="smartphone" class="text-slate-800" width="32" height="32"></i>
-                        <div><h3 class="font-bold text-slate-800 text-lg">用戶 App / Web</h3><p class="text-sm text-slate-500 mt-1">叫件、追蹤、通知回報</p></div>
-                    </div>
-                    <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard flex items-center gap-4">
-                        <i data-lucide="server" class="text-slate-800" width="32" height="32"></i>
-                        <div><h3 class="font-bold text-slate-800 text-lg">管理後台 (Admin Portal)</h3><p class="text-sm text-slate-500 mt-1">車隊監控、數據分析、異常排除</p></div>
-                    </div>
-                </div>
+    <!-- === Tab: Simulation === -->
+    <div id="simulation" class="tab-content active w-full max-w-6xl">
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-blue-900 via-indigo-800 to-indigo-900 p-6 text-white relative flex justify-between items-center">
+              <div class="z-10">
+                <h1 class="text-3xl font-bold mb-2 flex items-center gap-3">
+                  <i data-lucide="activity" class="animate-pulse text-blue-300"></i>
+                  包裹收發方案：場域模擬演示
+                </h1>
+                <p class="text-blue-100 opacity-80">自動化垂直運輸系統流程可視化</p>
+              </div>
+              <i data-lucide="building" class="absolute right-8 opacity-10" width="120" height="120"></i>
             </div>
 
-            <!-- Layer 2: SolRobo on NVIDIA Jetson AGX -->
-            <div class="relative border-2 border-slate-800 rounded-xl p-8 bg-white shadow-lg">
-                <div class="text-center mb-8"><h2 class="text-xl font-bold text-slate-800 tracking-wider">SolRobo on NVIDIA Jetson AGX</h2></div>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
-                        <i data-lucide="navigation" class="text-slate-700 mb-3" width="28" height="28"></i>
-                        <h3 class="font-bold text-slate-800 mb-2 text-sm">導航系統</h3>
-                        <p class="text-xs text-slate-600 mb-4">跨樓層 SLAM 地圖切換<br>動態路人避障</p>
-                        <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuVSLAM</div>
+            <!-- Simulation Area -->
+            <div class="p-8">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+                <!-- 1. Software -->
+                <div class="lg:col-span-3 flex flex-col gap-6 relative">
+                  <div class="text-center mb-2"><span class="bg-blue-100 text-blue-800 font-bold px-4 py-1.5 rounded-full text-sm">1. 軟體配置</span></div>
+                  <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-5 shadow-sm text-center transform transition hover:scale-105">
+                    <i data-lucide="cloud" class="mx-auto text-blue-600 mb-2 animate-float" width="40" height="40"></i>
+                    <h3 class="font-bold text-slate-800 text-md mb-2">雲端 FMS 車隊管理</h3>
+                    <div class="flex justify-center gap-3 text-slate-600">
+                      <div class="flex flex-col items-center"><i data-lucide="server" class="text-blue-500" width="18" height="18"></i><span class="text-[10px] font-medium">任務調度</span></div>
+                      <div class="flex flex-col items-center"><i data-lucide="smartphone" class="text-blue-500" width="18" height="18"></i><span class="text-[10px] font-medium">一鍵叫車</span></div>
                     </div>
-                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
-                        <i data-lucide="eye" class="text-slate-700 mb-3" width="28" height="28"></i>
-                        <h3 class="font-bold text-slate-800 mb-2 text-sm">視覺系統</h3>
-                        <p class="text-xs text-slate-600 mb-4">電梯按鈕座標辨識<br>客滿人數辨識</p>
-                        <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-red-600 text-white font-bold text-sm">SolVision</div>
+                  </div>
+                  <div class="flex justify-center text-blue-400 py-0"><i data-lucide="wifi" class="animate-pulse" width="20" height="20"></i></div>
+                  <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 rounded-2xl p-5 shadow-sm text-center transform transition hover:scale-105">
+                    <i data-lucide="cpu" class="mx-auto text-indigo-600 mb-2 animate-float" style="animation-delay: 0.5s;" width="40" height="40"></i>
+                    <h3 class="font-bold text-slate-800 text-md mb-2">AI 邊緣運算</h3>
+                    <div class="flex justify-center gap-3 text-slate-600">
+                      <div class="flex flex-col items-center"><i data-lucide="eye" class="text-indigo-500" width="18" height="18"></i><span class="text-[10px] font-medium">視覺辨識</span></div>
+                      <div class="flex flex-col items-center"><i data-lucide="navigation" class="text-indigo-500" width="18" height="18"></i><span class="text-[10px] font-medium">SLAM導航</span></div>
                     </div>
-                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
-                        <i data-lucide="settings" class="text-slate-700 mb-3" width="28" height="28"></i>
-                        <h3 class="font-bold text-slate-800 mb-2 text-sm">手臂控制模組</h3>
-                        <p class="text-xs text-slate-600 mb-4">機械臂控制與避障</p>
-                        <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuMotion</div>
-                    </div>
-                    <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50 min-h-[160px]">
-                        <i data-lucide="monitor" class="text-slate-700 mb-3" width="28" height="28"></i>
-                        <h3 class="font-bold text-slate-800 mb-2 text-sm">任務調度模組</h3>
-                        <div class="space-y-1 text-[11px] text-slate-600 mt-2"><p>任務分派</p><p>資料庫數據</p><p>即時監控</p></div>
-                    </div>
+                  </div>
                 </div>
-            </div>
 
-            <!-- Layer 3: Controller Layer -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-12 pb-4">
-                <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
-                    <i data-lucide="truck" class="text-slate-800" width="32" height="32"></i>
-                    <h4 class="font-bold text-slate-800">AMR 控制器</h4>
+                <!-- 2. Hardware -->
+                <div class="lg:col-span-3 flex flex-col gap-6 relative">
+                  <div class="text-center mb-2"><span class="bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-full text-sm">2. 硬體配置</span></div>
+                  <div class="bg-gradient-to-b from-emerald-50 to-emerald-100 border border-emerald-200 rounded-2xl p-6 h-full flex flex-col justify-center items-center shadow-sm relative">
+                    <div class="relative flex flex-col items-center w-full animate-float" style="animation-delay: 1s;">
+                      <div class="bg-white border-2 border-emerald-400 w-full p-2.5 rounded-t-2xl shadow-md text-center z-20 flex items-center gap-2">
+                        <i data-lucide="settings" class="text-emerald-600 flex-shrink-0" width="24" height="24"></i>
+                        <div class="text-left leading-tight"><h3 class="font-bold text-slate-800 text-xs">協作機械臂</h3><p class="text-[9px] text-slate-500">視覺導引按壓</p></div>
+                      </div>
+                      <div class="bg-slate-800 border-2 border-slate-700 w-[96%] p-2 shadow-inner z-[15] my-0.5 rounded-sm flex items-center gap-2">
+                        <i data-lucide="cpu" class="text-emerald-400 flex-shrink-0" width="20" height="20"></i>
+                        <div class="text-left leading-tight"><h3 class="font-bold text-white text-[11px] tracking-wider">Jetson AGX</h3><p class="text-[8px] text-emerald-100">控制 AMR 與機械臂</p></div>
+                      </div>
+                      <div class="bg-emerald-600 text-white border-2 border-emerald-700 w-[105%] p-3 rounded-lg shadow-lg text-center z-10 my-1 flex items-center gap-2">
+                        <i data-lucide="truck" class="flex-shrink-0" width="28" height="28"></i>
+                        <div class="text-left leading-tight"><h3 class="font-bold text-sm">AMR 底盤</h3><p class="text-[9px] text-emerald-200">自主移動避障</p></div>
+                      </div>
+                      <div class="bg-white border-2 border-slate-300 w-full p-2.5 rounded-b-2xl shadow-md text-center z-0 flex items-center gap-2">
+                        <i data-lucide="package" class="text-slate-500 flex-shrink-0" width="24" height="24"></i>
+                        <div class="text-left leading-tight"><h3 class="font-bold text-slate-800 text-xs">高載重籠車</h3></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
-                    <i data-lucide="bot" class="text-slate-800" width="32" height="32"></i>
-                    <h4 class="font-bold text-slate-800">手臂控制器</h4>
-                </div>
-                <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3 transition-transform hover:-translate-y-1">
-                    <i data-lucide="radar" class="text-slate-800" width="32" height="32"></i>
-                    <h4 class="font-bold text-slate-800">傳感裝置</h4>
-                </div>
-            </div>
-        </div>
 
-        <div class="bg-slate-50 p-4 border-t border-slate-200 text-center">
-            <p class="text-[10px] text-slate-400 uppercase tracking-widest">SolRobo Logistics Software Architecture Specification</p>
+                <!-- 3. Simulation Area -->
+                <div class="lg:col-span-6 flex flex-col gap-6 relative">
+                  <div class="text-center mb-2"><span class="bg-orange-100 text-orange-800 font-bold px-4 py-1.5 rounded-full text-sm">3. 情境模擬</span></div>
+                  <div class="bg-slate-100 border-2 border-slate-200 rounded-2xl p-4 h-full min-h-[380px] flex flex-col shadow-inner relative overflow-hidden">
+                    <div class="flex-1 relative w-full h-full mt-2">
+                      <div class="absolute bottom-[75%] left-0 w-[72%] border-b-[6px] border-slate-300 z-10"></div>
+                      <div class="absolute bottom-[78%] left-[10%] font-black text-slate-700 text-xl flex items-center gap-2 z-10">8F <span class="text-xs bg-white px-2 py-0.5 rounded shadow-sm text-slate-600">辦公室收發室</span></div>
+                      <div class="absolute bottom-[15%] left-0 w-[72%] border-b-[6px] border-slate-300 z-10"></div>
+                      <div class="absolute bottom-[18%] left-[10%] font-black text-slate-700 text-xl flex items-center gap-2 z-10">1F <span class="text-xs bg-white px-2 py-0.5 rounded shadow-sm text-slate-600">大廳收貨點</span></div>
+                      
+                      <div class="absolute bottom-[76%] left-[2%] z-20 flex flex-col items-center"><i data-lucide="wifi" class="animate-dispatch-pulse absolute -top-5" width="18" height="18"></i><i data-lucide="user" class="text-slate-600" width="30" height="30"></i><div class="text-[9px] font-bold text-slate-500 mt-0.5">行政人員</div></div>
+                      <div class="absolute bottom-[16%] left-[2%] z-20 flex flex-col items-center"><i data-lucide="smartphone" class="animate-signal-pulse absolute -top-5" width="18" height="18"></i><i data-lucide="user" class="text-slate-600" width="30" height="30"></i><div class="text-[9px] font-bold text-slate-500 mt-0.5">收發需求</div></div>
+                      <div class="absolute bottom-[16%] left-[9%] z-10 text-amber-700 animate-cargo-sync"><i data-lucide="package" class="bg-amber-100 rounded" width="20" height="20"></i></div>
+                      <div class="absolute bottom-[16%] left-[38%] z-20 flex flex-col items-center text-slate-500"><i data-lucide="user" width="32" height="32"></i><div class="text-[9px] font-bold text-slate-400 mt-0.5">路人</div></div>
+
+                      <div class="absolute top-0 right-0 w-[28%] h-full bg-slate-200/60 border-l-4 border-slate-400"></div>
+                      <div class="absolute bottom-[83%] left-[68%] z-30"><div class="w-1.5 h-4 bg-slate-300 rounded-l-sm animate-hall-btn-8f shadow-inner"></div></div>
+                      <div class="absolute bottom-[23%] left-[68%] z-30"><div class="w-1.5 h-4 bg-slate-300 rounded-l-sm animate-hall-btn-1f shadow-inner"></div></div>
+
+                      <div class="absolute right-[2%] w-[24%] h-[18%] bg-slate-50 border-2 border-slate-400 rounded z-10 animate-ele-sync flex items-center justify-center shadow-md overflow-hidden">
+                         <div class="absolute right-1 top-1/2 -translate-y-1/2 w-2 h-6 bg-slate-300 rounded-sm border border-slate-400 z-20"><div class="w-1 h-1 rounded-full bg-slate-400 mx-auto animate-ele-in-btn mt-3"></div></div>
+                         <div class="absolute inset-0 flex items-center justify-center animate-person-sync text-slate-500 z-10 bg-slate-100"><i data-lucide="users" width="32" height="32"></i></div>
+                      </div>
+
+                      <div class="absolute w-10 h-10 bg-emerald-600 rounded flex items-center justify-center shadow-lg z-40 animate-robot-sync text-white border-b-4 border-emerald-800">
+                         <i data-lucide="truck" width="20" height="20"></i>
+                         <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-full h-1.5 bg-slate-700 origin-left animate-arm-out flex justify-end items-center rounded-r-sm"><div class="w-2 h-2.5 bg-slate-800 rounded-sm -mr-0.5"></div></div>
+                         <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-full h-1.5 bg-slate-700 origin-left animate-arm-in flex justify-end items-center rounded-r-sm"><div class="w-2 h-2.5 bg-slate-800 rounded-sm -mr-0.5"></div></div>
+                         <div class="absolute bottom-[130%] left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[11px] font-bold px-2 py-1 rounded shadow-md whitespace-nowrap animate-tooltip-avoid flex items-center gap-1 z-50"><i data-lucide="activity" width="14" height="14"></i> 偵測避障</div>
+                         <div class="absolute bottom-[130%] left-1/2 -translate-x-1/2 bg-red-500 text-white text-[11px] font-bold px-2 py-1 rounded shadow-md whitespace-nowrap animate-tooltip-wait flex items-center gap-1 z-50"><i data-lucide="ban" width="14" height="14"></i> 客滿等下一台</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 
+    <!-- === Tab: Architecture === -->
+    <div id="architecture" class="tab-content w-full max-w-6xl">
+        <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 p-6 text-white border-b-4 border-blue-500 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="layers" class="text-blue-400"></i>
+                    <h1 class="text-2xl font-bold">智慧垂直物流系統：軟體架構圖</h1>
+                </div>
+                <div class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-xs font-mono">Ver 1.0 SolRobo Core</div>
+            </div>
+
+            <div class="p-8 space-y-10">
+                <div class="relative border-2 border-slate-300 rounded-xl p-6 bg-slate-50/50">
+                    <div class="absolute -top-3 left-6 bg-white px-2 text-slate-500 text-sm font-bold">User Interface (交互層)</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard flex items-center gap-4">
+                            <i data-lucide="smartphone" class="text-slate-800" width="32" height="32"></i>
+                            <div><h3 class="font-bold text-slate-800 text-lg">用戶 App / Web</h3><p class="text-sm text-slate-500 mt-1">任務叫件、狀態追蹤、簽收通知</p></div>
+                        </div>
+                        <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard flex items-center gap-4">
+                            <i data-lucide="server" class="text-slate-800" width="32" height="32"></i>
+                            <div><h3 class="font-bold text-slate-800 text-lg">管理後台 (Portal)</h3><p class="text-sm text-slate-500 mt-1">設備監控、調度優化、異常紀錄</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative border-2 border-slate-800 rounded-xl p-8 bg-white shadow-lg">
+                    <div class="text-center mb-8"><h2 class="text-xl font-bold text-slate-800 tracking-wider">SolRobo on NVIDIA Jetson AGX (邊緣處理層)</h2></div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
+                            <i data-lucide="navigation" class="text-slate-700 mb-3" width="28" height="28"></i>
+                            <h3 class="font-bold text-slate-800 mb-2 text-sm">導航系統</h3>
+                            <p class="text-xs text-slate-600 mb-4">跨樓層 SLAM 地圖<br>動態避障演算法</p>
+                            <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuVSLAM</div>
+                        </div>
+                        <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
+                            <i data-lucide="eye" class="text-slate-700 mb-3" width="28" height="28"></i>
+                            <h3 class="font-bold text-slate-800 mb-2 text-sm">視覺系統</h3>
+                            <p class="text-xs text-slate-600 mb-4">電梯按鈕辨識<br>客滿檢測技術</p>
+                            <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-red-600 text-white font-bold text-sm">SolVision</div>
+                        </div>
+                        <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50">
+                            <i data-lucide="settings" class="text-slate-700 mb-3" width="28" height="28"></i>
+                            <h3 class="font-bold text-slate-800 mb-2 text-sm">手臂控制</h3>
+                            <p class="text-xs text-slate-600 mb-4">機械臂路徑規劃<br>物理按壓觸控</p>
+                            <div class="mt-auto w-full border-2 border-slate-800 py-2 bg-[#76b900] text-white font-bold text-sm">cuMotion</div>
+                        </div>
+                        <div class="border-2 border-slate-800 p-4 flex flex-col items-center text-center rounded-lg bg-slate-50 min-h-[160px]">
+                            <i data-lucide="monitor" class="text-slate-700 mb-3" width="28" height="28"></i>
+                            <h3 class="font-bold text-slate-800 mb-2 text-sm">任務調度</h3>
+                            <div class="space-y-1 text-[11px] text-slate-600 mt-2"><p>即時分派邏輯</p><p>本機數據暫存</p><p>心跳狀態回傳</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-12 pb-4">
+                    <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3">
+                        <i data-lucide="truck" class="text-slate-800" width="32" height="32"></i>
+                        <h4 class="font-bold text-slate-800 uppercase tracking-tighter">AMR Controller</h4>
+                    </div>
+                    <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3">
+                        <i data-lucide="bot" class="text-slate-800" width="32" height="32"></i>
+                        <h4 class="font-bold text-slate-800 uppercase tracking-tighter">Arm Controller</h4>
+                    </div>
+                    <div class="bg-white border-2 border-slate-800 p-6 rounded shadow-hard text-center flex flex-col items-center gap-3">
+                        <i data-lucide="radar" class="text-slate-800" width="32" height="32"></i>
+                        <h4 class="font-bold text-slate-800 uppercase tracking-tighter">Sensing Unit</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === Tab: PRD === -->
+    <div id="prd" class="tab-content w-full max-w-6xl pb-10">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+            <div class="bg-slate-800 p-8 text-white">
+                <h1 class="text-3xl font-black mb-2 tracking-tight underline decoration-blue-500 decoration-4">產品需求文件 (PRD) V1.0</h1>
+                <p class="text-slate-400 font-medium uppercase tracking-widest">Smart Vertical Logistics: Package Delivery Solution</p>
+            </div>
+            
+            <div class="p-8 md:p-12 space-y-12 text-slate-800 leading-relaxed">
+                <!-- Section 1 -->
+                <section>
+                    <h2 class="text-2xl font-bold border-l-8 border-slate-900 pl-4 mb-6">1. 產品背景與痛點分析</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-red-500">
+                            <h3 class="font-bold text-red-700 mb-2 flex items-center gap-2"><i data-lucide="alert-circle" size="18"></i> 痛點一：基礎設施限制</h3>
+                            <p class="text-sm">租賃辦公場域無法取得物聯網 (IoT) 改裝權限，導致傳統需要 API 串接的機器人方案無法落地。</p>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-red-500">
+                            <h3 class="font-bold text-red-700 mb-2 flex items-center gap-2"><i data-lucide="user-minus" size="18"></i> 痛點二：人力價值虛耗</h3>
+                            <p class="text-sm">專人需頻繁往返樓層領取包裹、等待貨梯，嚴重剝奪行政團隊處理高價值業務的時間。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2 -->
+                <section>
+                    <h2 class="text-2xl font-bold border-l-8 border-slate-900 pl-4 mb-6">2. 產品願景與定位</h2>
+                    <div class="bg-slate-900 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                        <i data-lucide="shield-check" class="absolute -right-4 -bottom-4 opacity-10 text-white" width="200" height="200"></i>
+                        <p class="text-xl font-medium mb-4 italic">"打造具備高度適應性的免改裝 (Retrofit-Free) 垂直物流解決方案。"</p>
+                        <p class="text-slate-300">利用 AI 視覺、AMR 自主底盤與 6 自由度機械臂技術，實現「仿生操作」，在完全不改裝現有電梯設施的情況下，完成一站式收發服務。</p>
+                    </div>
+                </section>
+
+                <!-- Section 3 & 4 (Combined Core Logic) -->
+                <section>
+                    <h2 class="text-2xl font-bold border-l-8 border-slate-900 pl-4 mb-6">3. 核心業務邏輯與流程</h2>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600">01</div>
+                            <div class="pt-2">
+                                <h3 class="font-bold text-lg mb-1">通訊連動與派車</h3>
+                                <p class="text-slate-600">1F 人員發送需求 → 8F FMS 雲端系統接收 → 指派最佳路徑 AMR 出發。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600">02</div>
+                            <div class="pt-2">
+                                <h3 class="font-bold text-lg mb-1">垂直運輸搭梯策略</h3>
+                                <p class="text-slate-600">物理性按壓外呼鈕 → 視覺判定車廂人數 → **客滿自動等下一班** → 進入後按壓內部選層鈕。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600">03</div>
+                            <div class="pt-2">
+                                <h3 class="font-bold text-lg mb-1">地面自主導航</h3>
+                                <p class="text-slate-600">依據 SLAM 地圖自主移動 → 動態識別路人並執行避障 → 到達目標點執行裝載。</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Consultation Points (From PDF) -->
+                <section class="bg-slate-50 p-8 rounded-2xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-2">
+                        <i data-lucide="help-circle" class="text-blue-600"></i> 5. 業務營運與技術諮詢重點
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                        <div>
+                            <h4 class="font-bold text-slate-800 border-b-2 border-blue-500 inline-block mb-3">物件識別與追蹤</h4>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-5">
+                                <li>籠車物件需整合 Barcode / QR Code 或 RFID 感應。</li>
+                                <li>可選配載貨量感測器，偵測「倉位飽和度」。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 border-b-2 border-blue-500 inline-block mb-3">安全認證與簽收</h4>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-5">
+                                <li>身分對接：支援刷卡、OTP 驗證碼或臉部辨識。</li>
+                                <li>異常處理：收件人不在位時的自動回站或重送邏輯。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 border-b-2 border-blue-500 inline-block mb-3">場域邊界條件</h4>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-5">
+                                <li>電梯環境：需確認門檻高度、按鈕型式及 5G 通訊訊號。</li>
+                                <li>自動回充：需規劃專用 Docking Station 電力點位。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 border-b-2 border-blue-500 inline-block mb-3">系統擴充性</h4>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-5">
+                                <li>多機協作：考慮電梯口排隊的優先級權重邏輯。</li>
+                                <li>自動門串接：視覺辨識開啟非電梯之感應門。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="bg-slate-100 p-6 rounded-lg text-center text-xs text-slate-500">
+                    技術關鍵指標：辨識成功率 > 99% | 按壓精度 ±2mm | 避障反應 < 0.2s
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for Tab Switching -->
     <script>
-        lucide.createIcons();
+        function openTab(tabName) {
+            // Hide all tab contents
+            const contents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+
+            // Remove active class from all buttons
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+
+            // Show selected tab and set button as active
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById('btn-' + tabName).classList.add('active');
+            
+            // Re-render icons after tab switch (important for hidden elements)
+            lucide.createIcons();
+        }
+
+        // Initialize Lucide Icons
+        window.onload = function() {
+            lucide.createIcons();
+        };
     </script>
 </body>
 </html>
